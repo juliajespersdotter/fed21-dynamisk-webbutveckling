@@ -33,10 +33,12 @@ console.log("After readdir...");
 */
 
 /**
- * Readdire using promises 
+ * readdir using promises 
  */
 
- const fs = require('fs').promises;
+const fs = require('fs').promises;
+
+/*
 
  fs.readdir('.')
     .then(files => {
@@ -46,6 +48,21 @@ console.log("After readdir...");
     .catch(e => {
         console.error(e);
     })
+    */
+
+/**
+* readFile using promises
+*/
+
+fs.readFile('./data/loremipsum.txt', 'utf-8')
+    .then(data => {
+        console.log("Here's some info about your file:");
+        console.log(data);
+    })
+    .catch(e => {
+        console.error(e);
+    });
+    
 
 
 
