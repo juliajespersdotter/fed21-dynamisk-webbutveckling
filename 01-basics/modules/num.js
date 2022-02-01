@@ -6,7 +6,7 @@
 // 
 
 const round = (number, precision) => {
-    let decimal = 10 ** precision;
+    let decimal = 10 ** precision; 
     return Math.round(number * decimal) / decimal;
 }
 

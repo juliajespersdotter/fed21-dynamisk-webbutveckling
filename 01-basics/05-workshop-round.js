@@ -5,7 +5,7 @@
 const roundFunction = require('./modules/num');
 
 let number = 3.543234;
-let precision = 4;
+let precision = 2;
 
 let roundedNumber = roundFunction.round(number, precision);
 console.log(`My number was ${number}, with ${precision} decimals, making:`, roundedNumber);
