@@ -21,8 +21,12 @@ app.get('/now', (req, res) => {
     res.send(`The current time is ${new Date()}`);
 })
 
+app.get('/jokes', (req, res) => {
+    
+})
+
 // Serve files from `/pages`if not other route matches are found
-app.use(express.static('pages'))
+app.use(express.static('public'))
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
