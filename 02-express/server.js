@@ -11,10 +11,23 @@ const port = 3000;
 app.get('/', (req, res) => {
     // req = information om den inkommande förfrågan
     // res = metoder för att skicka ett svar på förfrågan
-    res.send('Hello World!');
+    res.send('Hello from the root.');
     console.log(req.method, req.url);
     console.log("Someone requested my root!");
 })
+
+// respond with currect time
+app.get('/now', (req, res) => {
+    res.send(`The current time is ${new Date()}`);
+})
+
+// Serve files from `/pages`if not other route matches are found
+app.use(express.static('pages'))
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+})
+
 
 // // respond to GET request for `/nom` 
 // app.get('/index', (req, res) => {
@@ -30,10 +43,3 @@ app.get('/', (req, res) => {
 // app.get('/nom', (req, res) => {
 //     res.sendFile(path.join(__dirname+'/pages/nom.html'));
 // }) 
-
-// Serve files from `/pages`if not other route matches are found
-app.use(express.static('pages'))
-
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-})
