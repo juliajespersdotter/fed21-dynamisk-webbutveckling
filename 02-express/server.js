@@ -4,6 +4,13 @@
 
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
+
+let rawdata = fs.readFileSync(path.resolve(__dirname, 'data/oneliners.json'));
+let jokes = JSON.parse(rawdata);
+console.log(jokes);
+
+
 const app = express();
 const port = 3000;
 
@@ -22,7 +29,12 @@ app.get('/now', (req, res) => {
 })
 
 app.get('/jokes', (req, res) => {
-    
+    // 1. Somehow read the JSON-contents of data/oneliners.json
+    // 2. Get a random item from the array
+    // 3. Respond with the item (`res.send(item)`)
+
+    let joke = jokes[Math.floor(Math.random() * jokes.length)];
+    res.send(joke);
 })
 
 // Serve files from `/pages`if not other route matches are found
