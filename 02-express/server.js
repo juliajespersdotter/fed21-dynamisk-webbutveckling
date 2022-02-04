@@ -6,11 +6,12 @@ const express = require('express');
 const oneliners = require('./data/oneliners.json');
 const _ = require('lodash');
 const morgan = require('morgan');
-const fs = require('fs'); // The fs module enables interacting with the file
-const ejs = require('ejs');
 
 const app = express();
 const port = 3000;
+
+// tell express to use ejs as it's view engine
+app.set('view engine', 'ejs');
 
 // use morgan http request logger
 app.use( morgan ('dev') );
@@ -35,11 +36,12 @@ app.get('/now', (req, res) => {
 
 app.get('/jokes', (req, res) => {
     // 1. Somehow read the JSON-contents of data/oneliners.json
-    // 2. Get a random item from the array
-    // 3. Respond with the item (`res.send(item)`)
 
+    // 2. Get a random item from the array
     let joke = _.sample(oneliners);
-    res.send(joke);
+
+    // 3. Respond with the item (`res.send(item)`)
+    res.render('jokes', {joke});
 })
 
 // Serve files from `/pages`if not other route matches are found
