@@ -3,24 +3,28 @@
  */
 
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
-
-let rawdata = fs.readFileSync(path.resolve(__dirname, 'data/oneliners.json'));
-let jokes = JSON.parse(rawdata);
-console.log(jokes);
-
+const oneliners = require('./data/oneliners.json');
+const _ = require('lodash');
+const morgan = require('morgan');
+const fs = require('fs'); // The fs module enables interacting with the file
 
 const app = express();
 const port = 3000;
+
+// use morgan http request logger
+app.use( morgan ('dev') );
+
+// Middleware
+// app.use((req, res, next) => {
+//     console.log(`Incoming ${req.method} request for ${req.url}`);
+//     next();
+// })
 
 // When a GET request for `/` (http://localhost:3000/) is received, run this function
 app.get('/', (req, res) => {
     // req = information om den inkommande förfrågan
     // res = metoder för att skicka ett svar på förfrågan
     res.send('Hello from the root.');
-    console.log(req.method, req.url);
-    console.log("Someone requested my root!");
 })
 
 // respond with currect time
@@ -33,7 +37,7 @@ app.get('/jokes', (req, res) => {
     // 2. Get a random item from the array
     // 3. Respond with the item (`res.send(item)`)
 
-    let joke = jokes[Math.floor(Math.random() * jokes.length)];
+    let joke = _.sample(oneliners);
     res.send(joke);
 })
 
