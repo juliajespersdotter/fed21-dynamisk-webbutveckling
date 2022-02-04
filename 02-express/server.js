@@ -26,7 +26,7 @@ app.use( morgan ('dev') );
 app.get('/', (req, res) => {
     // req = information om den inkommande förfrågan
     // res = metoder för att skicka ett svar på förfrågan
-    res.send('Hello from the root.');
+    res.render('index', { title: 'Index' });
 })
 
 // respond with currect time
@@ -41,7 +41,7 @@ app.get('/jokes', (req, res) => {
     let joke = _.sample(oneliners);
 
     // 3. Respond with the item (`res.send(item)`)
-    res.render('jokes', {joke});
+    res.render('jokes', {joke, title: 'Jokes'});
 })
 
 // Serve files from `/pages`if not other route matches are found
