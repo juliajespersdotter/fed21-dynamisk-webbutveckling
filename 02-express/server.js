@@ -7,6 +7,7 @@ const oneliners = require('./data/oneliners.json');
 const _ = require('lodash');
 const morgan = require('morgan');
 const fs = require('fs'); // The fs module enables interacting with the file
+const ejs = require('ejs');
 
 const app = express();
 const port = 3000;
