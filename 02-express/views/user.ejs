@@ -1,0 +1,28 @@
+<%- include('partials/header') %> 
+
+<h1>User <%= userId %></h1>
+
+    <ul>
+        <% users.forEach((user, index) => { %>
+            <% if( index == userId ){ %> 
+                <img src="<%= user.picture.large %>" alt="">
+                <li>
+                    Name: <%= user.name.first %> <%= user.name.last %>
+                </li>
+                <li>
+                    Gender: <%= user.gender %> 
+                </li>
+                <li>
+                    Email: <%= user.email %> Username: <%= user.login.username %>
+                </li>
+                <li>
+                    Location: <%= user.location.state %>, <%= user.location.country %>
+                </li>
+                <li>
+                    Adress: <%= user.location.street.name %> <%= user.location.street.number %>
+                </li>
+            <% } %>
+        <% }) %>
+    </ul>
+    
+<%- include('partials/footer') %> 

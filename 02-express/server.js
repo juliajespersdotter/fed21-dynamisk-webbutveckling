@@ -6,6 +6,7 @@ const express = require('express');
 const oneliners = require('./data/oneliners.json');
 const _ = require('lodash');
 const morgan = require('morgan');
+const users = require('./data/users.json');
 
 const app = express();
 const port = 3000;
@@ -26,7 +27,24 @@ app.use( morgan ('dev') );
 app.get('/', (req, res) => {
     // req = information om den inkommande förfrågan
     // res = metoder för att skicka ett svar på förfrågan
-    res.render('index', { title: 'My Express Server' });
+    res.render('index', { 
+        title: 'My Express Server',
+        users 
+    });
+});
+
+// Respond to GET request for `/users/*`
+app.get('/users/:userId', (req, res) => {
+    let userId = req.params.userId;
+    console.log(userId);
+
+    // Somehow use req.params.userId to get the corresponding user from the users array,
+    // and send that user to a view (which displays that user's information)
+    res.render('user', {
+        title: `user ${userId}`,
+        users, 
+        userId,
+    });
 })
 
 // respond with currect time
