@@ -11,7 +11,18 @@ const con = mysql.createConnection(
 );
 
 con.connect(err => {
-    if(err) throw err;
+    if(err) {
+        throw err;
+    }
 
     console.log("Anslutit till databasen!! Party party!");
+
+    con.query("SELECT id, name, hp FROM PokemonCards", ((err, result) => {
+        if (err) {
+            throw err;
+        }
+
+        console.log('Publiken vi har ett resultat!');
+        console.log(result);
+    }));
 });
