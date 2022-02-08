@@ -16,13 +16,30 @@ con.connect(err => {
     }
 
     console.log("Anslutit till databasen!! Party party!");
+    let sql = "SELECT id, name, hp FROM PokemonCards";
+    sql = sql + " WHERE id = 2";
 
-    con.query("SELECT id, name, hp FROM PokemonCards", ((err, result) => {
+    con.query(sql, ((err, result) => {
         if (err) {
             throw err;
         }
 
         console.log('Publiken vi har ett resultat!');
         console.log(result);
+
+        /*
+        // show result with foreach or for-loop
+        result.forEach(r => {
+            console.log('Pokémon har namnet ' + r.name + ' med hp till ' + r.hp);
+        });
+        
+        for (let i = 0; i < result.length; i++) {
+            const r = result[i];
+            console.log('Pokémon har namnet ' + r.name + ' med hp till ' + r.hp);
+        }
+        */
+
+        // Disconnect from database
+        con.end();
     }));
 });
