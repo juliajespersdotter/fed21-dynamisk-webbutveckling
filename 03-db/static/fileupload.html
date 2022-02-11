@@ -10,9 +10,8 @@
     
     <h1>Fileupload Test - GET</h1>
 
-    <form method="GET" action="/upload" enctype="multipart/form-data">
-        <input type="file" name="name" value="Upload"><br><br>
-        <input type="file" name="myFile"><br><br>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="myFile" value="Upload"><br><br>
         <input type="submit" value="Upload">
     </form>
 
