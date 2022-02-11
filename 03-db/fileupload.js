@@ -17,7 +17,8 @@ const storageObj = multer.diskStorage(
             cb(null, 'uploads');
         },
         filename: (req, file, cb) => {
-            cb(null, file.originalname);
+            const uniqueSuffix = (new Date()).valueOf().toString() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + '-' + file.originalname); // Hur får man till ett unikt filnamn?
         }
     }
 );
