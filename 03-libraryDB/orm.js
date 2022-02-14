@@ -1,49 +1,11 @@
-const PokemonFriends = require('./PokemonFriends');
+const Titles = require('./Titles');
 
-PokemonFriends.fetchAll().then((result) => {
+Titles.fetchAll().then((result) => {
     console.log(result);
     console.log(result.toJSON());
 });
 
-PokemonFriends.count().then((count) => {
-    console.log('Vi har nu ' + count + ' Pokemon vänner!');
+Titles.count().then((count) => {
+    console.log('We now have ' + count + ' books in circulation.');
 });
 
-/*
-for (let i = 1; i < 11; i++) {
-    const friend = {
-        name: 'name'+i,
-        email: 'name'+i+'@email.com'
-    };
-    let newFriend = new PokemonFriends(friend);
-    newFriend.save().then((res) => {
-    console.log(res);
-})
-}
-*/
-// Delete all 
-PokemonFriends.where("name", "LIKE", "name%").fetchAll().then((result) =>{
-    console.log(result.toJSON());
-    // Loopa igenom alla resultaten
-    result.forEach(model => {
-        model.destroy().then();
-    });
-})
-
-
-// PokemonFriends.where(friend).fetchAll().then((collection) => {
-//     console.log(collection.toJSON());
-// });
-
-/*
-const attribute = {
-    name: 'Skrelp',
-    hp: 50
-};
-
-let Skrelp = new PokemonFriends(attribute);
-Skrelp.save().then((res) => {
-    console.log(res);
-});
-*/
-// destroy() -- för att radera
