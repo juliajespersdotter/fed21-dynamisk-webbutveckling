@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const pokemoncards_controller = require('../controllers/pokemoncards_controller');
 
 // Implementera GET / READ - Alla
-router.get('/', (req, res) => {     // => /pokemoncards/
-    res.send('GET not implemented');
-});
+router.get('/', pokemoncards_controller.read);
 
 // Implementera GET / READ - Ett Pokemonkort
-router.get('/:id', (req, res) => {
-    res.send('GET ' + req.params.id + ' not implemented yet!');
-});
+router.get('/:id', pokemoncards_controller.read);
 
 router.post('/', (req, res) => {
     res.send('POST not yet implemented');
