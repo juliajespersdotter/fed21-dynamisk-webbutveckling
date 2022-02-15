@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Implementera GET / READ - Alla
-router.get('/', (req, res) => {     // => /pokemoncards/
+router.get('/', (req, res) => {     // => /pokemonfriends/
     res.send('GET not implemented for pokemonfriends');
 });
 
@@ -19,7 +19,7 @@ router.put('/:id', (req, res) => {
     res.send('PUT (' + req.params.id + ') not yet implemented for pokemonfriends');
 });
 
-// Kan testas med curl -X PUT http://localhost:3000/pokemoncards/(id)
+// Kan testas med curl -X PUT http://localhost:3000/pokemonfriends/(id)
 router.delete('/:id', (req, res) => {
     res.send('DELETE (' + req.params.id + ') not yet implemented for pokemonfriends');
 });
