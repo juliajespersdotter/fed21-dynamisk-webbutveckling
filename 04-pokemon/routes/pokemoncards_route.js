@@ -8,18 +8,12 @@ router.get('/', pokemoncards_controller.read);
 // Implementera GET / READ - Ett Pokemonkort
 router.get('/:id', pokemoncards_controller.read);
 
-router.post('/', (req, res) => {
-    res.send('POST not yet implemented');
-});
+router.post('/', pokemoncards_controller.create);
 
-router.put('/:id', (req, res) => {
-    res.send('PUT (' + req.params.id + ') not yet implemented');
-});
+router.put('/:id', pokemoncards_controller.update);
 
-// Kan testas med curl -X PUT http://localhost:3000/pokemoncards/(id)
-router.delete('/:id', (req, res) => {
-    res.send('DELETE (' + req.params.id + ') not yet implemented');
-});
+// Kan testas med curl -X PUT http://localhost:3000/pokemoncards/(id) -H 'Content-Type: application/json' -d '{ "name": "Bobba Fett", "hp": 120, xp: 0 }'
+router.delete('/:id', pokemoncards_controller.remove);
 
 
 module.exports = router;
