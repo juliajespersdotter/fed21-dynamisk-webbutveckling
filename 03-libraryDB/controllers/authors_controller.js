@@ -28,9 +28,9 @@ const read = async(req, res) => {
         let card;
 
         if (req.params.id) {
-            card = await Authors.where({ "id" : req.params.id }).fetch({ require: false });
+            card = await Authors.where({ "id" : req.params.id }).fetch({ require: false ,withRelated: ['hasWritten']});
         } else {
-            card = await Authors.fetchAll();
+            card = await Authors.fetchAll({ withRelated: ['hasWritten'] });
         } 
 
         if(!card) {

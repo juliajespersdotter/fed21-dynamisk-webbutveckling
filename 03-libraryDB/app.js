@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 // Använd static filer
-app.use()
+app.use(express.static('./static'));
 
 // Ladda bodyParsers
 app.use(express.json());
