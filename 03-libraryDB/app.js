@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+// Använd static filer
+app.use()
+
 // Ladda bodyParsers
 app.use(express.json());
 app.use(express.urlencoded({ extended : false }));
