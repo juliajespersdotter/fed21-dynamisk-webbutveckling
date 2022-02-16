@@ -5,7 +5,7 @@ const Authors = require('../models/Authors');
 const create = async(req, res) => {
     try {
 
-        let card = await new Authors(req.body).save();
+        let card = await new Authors(req.body).save({withRelated: ['hasWritten']});
 
         return res.status(201).send({
             success: true,
