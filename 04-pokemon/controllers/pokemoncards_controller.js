@@ -28,9 +28,9 @@ const read = async(req, res) => {
         let card;
 
         if (req.params.id) {
-            card = await PokemonCards.where({ "id" : req.params.id }).fetch({ require: false });
+            card = await PokemonCards.where({ "id" : req.params.id }).fetch({ require: false , withRelated: ['wonBattles', 'lostBattles']});
         } else {
-            card = await PokemonCards.fetchAll();
+            card = await PokemonCards.fetchAll( { withRelated: ['wonBattles', 'lostBattles' ]});
         } 
 
         if(!card) {
