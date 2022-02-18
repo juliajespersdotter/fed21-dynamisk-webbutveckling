@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const authors_controller = require('../controllers/authors_controller');
+const log = require('../logging.js');
 
 // Implementera GET / READ - Alla
-router.get('/', authors_controller.read);
+router.get('/', authors_controller.read)
 
 // Implementera GET / READ - Ett Pokemonkort
 router.get('/:id', authors_controller.read);
