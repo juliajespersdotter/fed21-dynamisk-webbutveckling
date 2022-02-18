@@ -1,28 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const pokemonfriends_controller = require('../controllers/pokemonfriends_controller');
 
 // Implementera GET / READ - Alla
-router.get('/', (req, res) => {     // => /pokemonfriends/
-    res.send('GET not implemented for pokemonfriends');
-});
+router.get('/', pokemonfriends_controller.read);
 
 // Implementera GET / READ - Ett Pokemonkort
-router.get('/:id', (req, res) => {
-    res.send('GET ' + req.params.id + ' not implemented yet for pokemonfriends!');
-});
+router.get('/:id', pokemonfriends_controller.read);
 
-router.post('/', (req, res) => {
-    res.send('POST not yet implemented');
-});
+router.post('/', pokemonfriends_controller.create);
 
-router.put('/:id', (req, res) => {
-    res.send('PUT (' + req.params.id + ') not yet implemented for pokemonfriends');
-});
+router.put('/:id', pokemonfriends_controller.update);
 
 // Kan testas med curl -X PUT http://localhost:3000/pokemonfriends/(id)
-router.delete('/:id', (req, res) => {
-    res.send('DELETE (' + req.params.id + ') not yet implemented for pokemonfriends');
-});
+router.delete('/:id', pokemonfriends_controller.destroy);
+
+// Implementera addCard
+router.post('/:id/addCard', pokemonfriends_controller.addCard);
 
 
 module.exports = router;
