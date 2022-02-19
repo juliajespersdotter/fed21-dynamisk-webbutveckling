@@ -1,8 +1,8 @@
 const { transports } = require('winston');
 const winston = require('winston');
 
-const myFormat = winston.format.printf(( { level, message, timestamp } ) => {
-    return `${timestamp} ${level} ${message}`;
+const myFormat = winston.format.printf(( { level, message, label, timestamp, meta } ) => {
+    return `[${timestamp}] ${level} ${label} ${message} ${meta}`;
 });
 
 const log = winston.createLogger({
