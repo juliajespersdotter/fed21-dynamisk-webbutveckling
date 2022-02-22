@@ -4,6 +4,7 @@
 
 const debug = require('debug')('books:user_controller');
 const models = require('../models');
+const {body, matchedData, validationResult} = require('express-validator');
 
 /**
  * Get all resources
@@ -44,12 +45,16 @@ const show = async (req, res) => {
  * POST /
  */
 const store = async (req, res) => {
-	const data = {
-		username: req.body.username,
-		password: req.body.password,
-		first_name: req.body.first_name,
-		last_name: req.body.last_name,
-	};
+
+	// check for validation errors
+	const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).send({ status : "fail", data: errors.array() });
+    }
+
+	// get only the valid data from the request
+    const validData = matchedData(req); 
+    res.send({ status: 'success', data: validData});
 
 	try {
 		const user = await new models.User(data).save();
