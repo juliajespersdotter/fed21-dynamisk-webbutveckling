@@ -13,7 +13,7 @@ router.get('/:userId', userController.show);
 router.post('/', validUser.createRules , userController.store);
 
 /* Update a specific resource */
-router.put('/:userId', userController.update);
+router.put('/:userId', validUser.updateRules, userController.update);
 
 /* Destroy a specific resource */
 router.delete('/:userId', userController.destroy);
