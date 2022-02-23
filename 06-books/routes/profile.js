@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profile_controller');
-const validUser = require('../validation/user')
+const validUser = require('../validation/profile')
 
 /** 
  * Get authenticated user's profile 

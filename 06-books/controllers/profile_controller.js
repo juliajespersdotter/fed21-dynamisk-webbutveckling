@@ -26,9 +26,6 @@ const getProfile = async (req, res) => {
  * PUT /
  */
 const updateProfile = async (req, res) => {
-	// make sure user exists
-	const user = await new models.User({ id: req.user.id }).fetch({ require: false });
-
 	// Checking after errors before updating user
 	const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -37,12 +34,12 @@ const updateProfile = async (req, res) => {
     const validData = matchedData(req); 
 
 	try {
-		const updatedUser = await user.save(validData);
+		const updatedUser = await req.user.save(validData);
 		debug("Updated user successfully: %O", updatedUser);
 		res.send({
 			status: 'success',
 			data: {
-				updatedUser,
+				user: req.user,
 			},
 		});
 	} catch (error) {
@@ -56,14 +53,16 @@ const updateProfile = async (req, res) => {
 	
 
 const getBooks = async (req, res) => {
-	// somehow get the authenticated user's books
-	// and return it
-	const user_books = await new models.User({ id: req.user.id }).fetch({withRelated: ['books']});
+	// get user and also eager-load the books-relation
+	// const user = await new models.User({ id: req.user.id }).fetch({withRelated: ['books']});
 
-		res.send({
+	// "lazy load" the books-relation
+	await req.user.load('books');
+
+		res.status(200).send({
 			status: 'success',
 			data: {
-				books: user_books,
+				books: req.user.related('books'),
 			}
 		});
 }
