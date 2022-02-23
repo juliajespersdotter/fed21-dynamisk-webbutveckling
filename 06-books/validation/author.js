@@ -3,18 +3,18 @@
  */
 
  const { body } = require('express-validator');
+ const currentYear = (new Date).getFullYear();
 
  const createRules = [
      body('first_name').exists().isLength( { min: 2 }),
      body('last_name').exists().isLength({ min: 2 }),
-     body('birthyear').exists().isLength({ min: 4 , max: 4 }),
+     body('birthyear').exists().isInt({ min: 1700 , max: currentYear }),
  ];
  
- // allow only password, first_name, last_name to be updated, only optionally
  const updateRules = [
      body('first_name').optional().isLength({ min: 2 }),
      body('last_name').optional().isLength({ min: 2 }),
-     body('birthyear').optional().isLength({ min: 4, max: 4 }),
+     body('birthyear').optional().isInt({ min: 1700, max: currentYear}),
  ];
  
  module.exports = {

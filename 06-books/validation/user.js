@@ -6,10 +6,10 @@ const { body } = require('express-validator');
 const models = require('../models');
 
 const createRules = [
-    body('username').exists().isLength( { min: 3 }).custom(async value => {
+    body('username').exists().isLength( { min: 3 }).custom(async value => { // custom rule
         const user = await new models.User({ username : value }).fetch({ require : false});
         if (user) {
-            return Promise.reject("Username already exists.");
+            return Promise.reject("Username already exists.");  // duplicate usernames not allowed
         }
 
         return Promise.resolve();
@@ -20,6 +20,7 @@ const createRules = [
 ];
 
 // allow only password, first_name, last_name to be updated, only optionally
+// we dont want usernames to be changeable
 const updateRules = [
     body('password').optional().isLength({ min: 4 }),
     body('first_name').optional().isLength({ min: 2 }),
