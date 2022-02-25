@@ -5,6 +5,7 @@
 const debug = require('debug')('books:profile_controller');
 const models = require('../models');
 const {matchedData, validationResult} = require('express-validator');
+const bcrypt = require('bcrypt');
 
 /**
  * Register a new user
@@ -21,6 +22,16 @@ const register = async (req, res) => {
 
     // get only the valid data from the request
     const validData = matchedData(req); 
+
+    // Replace the password with a hashed password
+    try {
+        validData.password = await bcrypt.hash(validData.password, 10);
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown when hashing the password.',
+        });
+    }
 
     try {
         const user = await new models.User(validData).save();
