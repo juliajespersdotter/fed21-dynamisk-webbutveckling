@@ -2,6 +2,7 @@
  * Book model
  */
 
+
 module.exports = (bookshelf) => {
 	return bookshelf.model('Book', {
 		tableName: 'books',

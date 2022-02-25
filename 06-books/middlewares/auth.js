@@ -4,7 +4,7 @@
 
 const debug = require('debug')('books:auth');
 
-const { User } = require('../models');
+const { User, Book } = require('../models');
 
 /**
  * HTTP Basic Authentication
@@ -57,6 +57,8 @@ const basic = async (req, res, next) => {
             data: 'Authorization failed',
         });
     }
+
+
 
     // finally, attach user to request
     req.user = user;

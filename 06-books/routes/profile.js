@@ -20,6 +20,7 @@ router.put('/', validUser.updateRules, profileController.updateProfile);
  */
 router.get('/books', profileController.getBooks);
 
+router.post('/books', validUser.addBookRules, profileController.addBook);
 
 
 module.exports = router;
