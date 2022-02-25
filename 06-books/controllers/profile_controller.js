@@ -3,8 +3,8 @@
  */
 
 const debug = require('debug')('books:profile_controller');
-const models = require('../models');
 const {matchedData, validationResult} = require('express-validator');
+const bcrypt = require('bcrypt');
 
 /**
  * Get authenticated user's profile
@@ -32,6 +32,15 @@ const updateProfile = async (req, res) => {
         return res.status(422).send({ status : "fail", data: errors.array() });
     }
     const validData = matchedData(req); 
+
+	try {
+		validData.password = await bcrypt.hash(validData.password, 10);
+	} catch (error) {
+		res.status(500).send({
+			status: 'error',
+			message: 'Exception thrown when hashing new password',
+		});
+	}
 
 	try {
 		const updatedUser = await req.user.save(validData);

@@ -63,11 +63,11 @@ const basic = async (req, res, next) => {
 
     // hash the incoming cleartext password using the salt from the db
     // and compare if the generated hash matches the db-hash
-    const result = await  bcrypt.compare(password, hash);
+    const result = await bcrypt.compare(password, hash);
     if (!result) {
         return res.status(401).send({
             status: 'fail',
-            data: 'Authorization failed',
+            data: 'Authorization failed, invalid password',
         })
     }
 
