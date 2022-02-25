@@ -3,8 +3,9 @@
  */
 
 const debug = require('debug')('books:auth');
+const bcrypt = require('bcrypt');
 
-const { User, Book } = require('../models');
+const { User } = require('../models');
 
 /**
  * HTTP Basic Authentication
@@ -49,13 +50,25 @@ const basic = async (req, res, next) => {
     const [username, password] = decodedPayload.split(':');
     console.log(username, password);
 
+
     // check if a user with this username and password exists
-    const user = await new User({ username, password }).fetch({ require: false });
+    const user = await new User({ username }).fetch({ require: false });
     if(!user) {
         return res.status(401).send({
             status: 'fail',
             data: 'Authorization failed',
         });
+    }
+    const hash = user.get('password');
+
+    // hash the incoming cleartext password using the salt from the db
+    // and compare if the generated hash matches the db-hash
+    const result = await  bcrypt.compare(password, hash);
+    if (!result) {
+        return res.status(401).send({
+            status: 'fail',
+            data: 'Authorization failed',
+        })
     }
 
 
