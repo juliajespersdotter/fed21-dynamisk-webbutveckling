@@ -6,6 +6,7 @@ const debug = require('debug')('books:auth_controller');
 const models = require('../models');
 const {matchedData, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
 /** 
  * Login a user, sign a JWT token and return it
@@ -19,7 +20,36 @@ const bcrypt = require('bcrypt');
  */
 
 const login = async (req, res) => {
-    // check if a user with the username exists
+    // destructure username and password from request body
+    const { username, password } = req.body 
+
+    // login the user
+    const user = await models.User.login(username, password);
+    if(!user) {
+        return res.status(401).send({
+            status: "fail",
+            data: 'Authentication failed.',
+        });
+    }
+
+    // construct jwt payload
+    const payload = {
+        sub: user.get('username'),
+        user_id: user.get('id'),
+        name: user.get('first_name') + '.' + user.get('last_name'),    
+    }
+
+    // sign payload and get access-token
+    var access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+
+    // respond with the access-token 
+    return res.send({
+        status: 'success',
+        data: {
+            // here be `access_token`
+            access_token,
+        }
+    })
 
 }
 

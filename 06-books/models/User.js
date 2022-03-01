@@ -31,6 +31,13 @@ module.exports = (bookshelf) => {
 
 			// all is well, return user
 			return user;
+		},
+
+		/**
+		 * @todo create fetchById function
+		 */
+		async fetchById(id) {
+
 		}
 	});
 };
