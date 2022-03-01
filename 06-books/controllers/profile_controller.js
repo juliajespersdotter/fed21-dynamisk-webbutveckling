@@ -6,7 +6,6 @@ const debug = require('debug')('books:profile_controller');
 const models = require('../models');
 const {matchedData, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
 
 /**
  * Get authenticated user's profile
@@ -22,11 +21,11 @@ const getProfile = async (req, res) => {
 
 	 try {
 		 // create function fetchById()
-		 const user = await User.fetchById(req.user.user_id);
+		 const user = await models.User.fetchById(req.user.user_id);
 		 res.send({
 			status: 'success',
 			data: {
-				user: req.user,
+				user: user,
 			}
 		});
 	 } catch (error) {
@@ -43,6 +42,8 @@ const getProfile = async (req, res) => {
  */
 const updateProfile = async (req, res) => {
 	// Checking after errors before updating user
+	const user = await models.User.fetchById(req.user.user_id);
+
 	const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).send({ status : "fail", data: errors.array() });
@@ -59,12 +60,12 @@ const updateProfile = async (req, res) => {
 	}
 
 	try {
-		const updatedUser = await req.user.save(validData);
+		const updatedUser = await user.save(validData);
 		debug("Updated user successfully: %O", updatedUser);
 		res.send({
 			status: 'success',
 			data: {
-				user: req.user,
+				user: updatedUser,
 			},
 		});
 	} catch (error) {
@@ -87,20 +88,23 @@ const getBooks = async (req, res) => {
 	 *  @todo and get their books
 	 */
 
+	const user = await models.User.fetchById(req.user.user_id);
 
 	// "lazy load" the books-relation
-	await req.user.user_id('books');
+	await user.load('books');
 
 		res.status(200).send({
 			status: 'success',
 			data: {
-				books: req.user.related('books'),
+				books: user.related('books'),
 			}
 		});
 }
 
 const addBook = async (req, res) => {
 	// Checking after errors before adding book
+	const user = await models.User.fetchById(req.user.user_id);
+
 	const errors = validationResult(req);
 	if(!errors.isEmpty()){
 		return res.status(422).send({ status : "fail", data: errors.array() });
@@ -109,10 +113,10 @@ const addBook = async (req, res) => {
 	const validData = matchedData(req); 
 
 	// lazy-load book relationship
-	await req.user.load('books');
+	await user.load('books');
 
 	// get the user's books
-	const books = req.user.related('books');
+	const books = user.related('books');
 
 	// how to check if book is already in list
 	/* let already_exists = false;
@@ -134,7 +138,7 @@ const addBook = async (req, res) => {
 	}
 
 	try {
-		const result = await req.user.books().attach(validData.book_id);
+		const result = await user.books().attach(validData.book_id);
 
 		if(result === books){
 			debug("Cannot add book already in list.")

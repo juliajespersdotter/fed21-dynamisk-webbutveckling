@@ -37,7 +37,12 @@ module.exports = (bookshelf) => {
 		 * @todo create fetchById function
 		 */
 		async fetchById(id) {
+			const user = await new this({ id }).fetch({ require: false });
+			if(!user) {
+				return false;
+			}
 
+			return user;
 		}
 	});
 };
