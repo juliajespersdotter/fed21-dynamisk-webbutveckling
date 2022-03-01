@@ -42,7 +42,7 @@ const register = async (req, res) => {
 
     // Replace the password with a hashed password
     try {
-        validData.password = await bcrypt.hash(validData.password, 10);
+        validData.password = await bcrypt.hash(validData.password, models.User.hashSaltRounds);
     } catch (error) {
         res.status(500).send({
             status: 'error',

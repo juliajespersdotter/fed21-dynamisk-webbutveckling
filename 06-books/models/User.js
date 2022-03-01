@@ -11,6 +11,8 @@ module.exports = (bookshelf) => {
 			return this.belongsToMany('Book');
 		}
 	}, {
+		hashSaltRounds: 10, 
+
 		async login(username, password) {
 
 			// check if a user with this username and password exists
