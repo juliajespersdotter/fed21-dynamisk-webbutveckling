@@ -1,16 +1,33 @@
 /**
- * Register Controller
+ * Auth Controller
  */
 
-const debug = require('debug')('books:profile_controller');
+const debug = require('debug')('books:auth_controller');
 const models = require('../models');
 const {matchedData, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
 
+/** 
+ * Login a user, sign a JWT token and return it
+ * 
+ * POST /login
+ *
+ * {
+ * "username": "",
+ * "password": ""
+ * }
+ */
+
+const login = async (req, res) => {
+    // check if a user with the username exists
+    
+}
+
+
 /**
  * Register a new user
  * 
- * POST /
+ * POST /register
  */
 
 const register = async (req, res) => {

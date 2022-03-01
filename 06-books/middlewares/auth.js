@@ -51,27 +51,13 @@ const basic = async (req, res, next) => {
     console.log(username, password);
 
 
-    // check if a user with this username and password exists
-    const user = await new User({ username }).fetch({ require: false });
-    if(!user) {
+    const user = await User.login(username, password);
+    if (!user) {
         return res.status(401).send({
             status: 'fail',
             data: 'Authorization failed',
         });
     }
-    const hash = user.get('password');
-
-    // hash the incoming cleartext password using the salt from the db
-    // and compare if the generated hash matches the db-hash
-    const result = await bcrypt.compare(password, hash);
-    if (!result) {
-        return res.status(401).send({
-            status: 'fail',
-            data: 'Authorization failed, invalid password',
-        })
-    }
-
-
 
     // finally, attach user to request
     req.user = user;
