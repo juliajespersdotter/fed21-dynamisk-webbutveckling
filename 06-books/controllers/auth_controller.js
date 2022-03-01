@@ -20,7 +20,7 @@ const bcrypt = require('bcrypt');
 
 const login = async (req, res) => {
     // check if a user with the username exists
-    
+
 }
 
 
@@ -72,4 +72,5 @@ const register = async (req, res) => {
 
 module.exports = {
     register,
+    login
 }

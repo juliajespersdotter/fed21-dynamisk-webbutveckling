@@ -2,6 +2,8 @@
  * User model
  */
 
+const bcrypt = require('bcrypt');
+
 module.exports = (bookshelf) => {
 	return bookshelf.model('User', {
 		tableName: 'users',
@@ -12,7 +14,7 @@ module.exports = (bookshelf) => {
 		async login(username, password) {
 
 			// check if a user with this username and password exists
-			const user = await new User({ username }).fetch({ require: false });
+			const user = await new this({ username }).fetch({ require: false });
 			if(!user) {
 				return false;
 			}
