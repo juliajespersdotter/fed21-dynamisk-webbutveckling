@@ -7,6 +7,7 @@ const { User } = require('../models');
 const {matchedData, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
 
+
 /**
  * Get authenticated user's profile
  *
@@ -104,7 +105,7 @@ const addBook = async (req, res) => {
 
 	const validData = matchedData(req); 
 
-	// get the user's books
+	// get the user's book by id 
 	const user = await User.fetchById(req.user.user_id, { withRelated: ['books'] });
 
 	// get the user's books
