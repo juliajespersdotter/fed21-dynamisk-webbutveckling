@@ -10,6 +10,8 @@ const { User } = require('../models');
 
 /**
  * HTTP Basic Authentication
+ * 
+ * Redudant if using JWT
  */
 
 const basic = async (req, res, next) => {
