@@ -8,12 +8,33 @@ const addMessageToChat = message => {
 	const liEl = document.createElement('li');
 	liEl.innerText = message;
 
+	// set class of `li` to `message`
+	liEl.classList.add('message');
+
 	// append `li`element to `#messages`
 	messagesEl.appendChild(liEl);
 
 	//scroll `li` element into view
 	liEl.scrollIntoView();
 }
+
+const addNoticeToChat = notice => {
+	const liEl = document.createElement('li');
+	liEl.innerText = notice;
+	liEl.classList.add('notice');
+	messagesEl.appendChild(liEl);
+	liEl.scrollIntoView();
+}
+
+// listen for new user connected
+socket.on('user:connected', () => {
+	addNoticeToChat(`Someone connected`);
+})
+
+// listen for user disconnected
+socket.on('user:disconnected', () => {
+	addNoticeToChat("Someone disconnected");
+})
 
 // listen for incoming messages
 socket.on('chat:message', message => {
