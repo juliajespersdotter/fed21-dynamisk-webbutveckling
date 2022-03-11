@@ -20,10 +20,13 @@ const addMessageToChat = (message, ownMsg = false) => {
 		liEl.classList.add('you');
 	}
 
+	// get human readable time
+	const time = moment(message.timestamp).format('HH:mm:ss');
+
 	// set content of `li` element
 	liEl.innerHTML = ownMsg
 		? message.content
-		: `<span class="user">${message.username}</span>: ${message.content}`;
+		: `<span class="user">${message.username}</span>: ${message.content} ${time}`;
 
 	// append `li` element to `#messages`
 	messagesEl.appendChild(liEl);
@@ -43,8 +46,8 @@ const addNoticeToChat = notice => {
 }
 
 // listen for when a new user connects
-socket.on('user:connected', () => {
-	addNoticeToChat("Someone connected");
+socket.on('user:connected', (username) => {
+	addNoticeToChat(username + " connected");
 });
 
 // listen for when a user disconnects
@@ -93,7 +96,8 @@ messageForm.addEventListener('submit', e => {
 
 	const msg = {
 		username,
-		content: messageEl.value
+		content: messageEl.value,
+		timestamp: Date.now(),
 	}
 
 	// send message to server
