@@ -21,11 +21,17 @@ const handleDisconnect = function() {
 }
 
 // handle when user has joined the chat
-const handleUserJoined = function(username, callback) {
+const handleUserJoined = function(username, room, callback) {
 	// associate socket id with username
 	users[this.id] = username;
 
-	this.broadcast.emit('user:connected', username);
+	debug(`User ${username} with socket id ${this.id} wants to join room '${room}'`);
+
+	// join room
+	this.join(room);
+
+	// broadcast only to those in the same room
+	this.broadcast.to(room).emit('user:connected', username);
 
 	// confirm join
 	callback({
@@ -38,7 +44,7 @@ const handleChatMessage = function(message) {
 	debug('Someone said something: ', message);
 
 	// emit `chat:message` event to everyone EXCEPT the sender
-	this.broadcast.emit('chat:message', message);
+	this.broadcast.to(message.room).emit('chat:message', message);
 }
 
 
