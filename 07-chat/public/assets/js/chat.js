@@ -49,12 +49,12 @@ const addNoticeToChat = notice => {
 
 // listen for when a new user connects
 socket.on('user:connected', (username) => {
-	addNoticeToChat(username + " connected");
+	addNoticeToChat(`${username} connected 🤩`);
 });
 
 // listen for when a user disconnects
 socket.on('user:disconnected', (username) => {
-	addNoticeToChat(username + " disconnected");
+	addNoticeToChat(`${username} disconnected 😥`);
 });
 
 // listen for incoming messages
@@ -84,6 +84,9 @@ usernameForm.addEventListener('submit', e => {
 		
 			// show chat view
 			chatWrapperEl.classList.remove('hide');
+
+			// set room name as chat title
+			document.querySelector('#chat-title').innerText = room;
 		
 			// focus on inputMessage
 			messageEl.focus();

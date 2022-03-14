@@ -6,29 +6,59 @@ const debug = require('debug')('chat:socket_controller');
 
 let io = null; // socket.io server instance
 
-// list of socket-ids and their username
-const users = {}
+const users = {};
+// list of rooms and their users
+const rooms = [
+	{
+		id: 'general',
+		name: 'General',
+		users: {},
+	},
+	{
+		id: 'major',
+		name: 'Major',
+		users: {},
+	},
+	{
+		id: 'sergeant',
+		name: 'Sergeant',
+		users: {},
+	},
+]
+
 
 // handle when user has disconnected from chat
 const handleDisconnect = function() {
 	debug(`Client ${this.id} disconnected :(`);
 
-	// let everyone know that user has disconnected
-	this.broadcast.emit('user:disconnected', users[this.id]);
+	// find the room that this socket is part of
+	const room = rooms.find(chatroom => chatroom.users.hasOwnProperty(this.id));
+	
+	// if socket was not in a room, don't broadcast disconnect
+	if(!room) {
+		return;
+	}
 
-	// remove user from list of connected users
-	delete users[this.id];
+	// let everyone in the room know that user has disconnected
+	this.broadcast.to(room.id).emit('user:disconnected', room.users[this.id]);
+
+	// remove user from list of connected users in that room
+	delete room.users[this.id];
 }
 
 // handle when user has joined the chat
-const handleUserJoined = function(username, room, callback) {
-	// associate socket id with username
-	users[this.id] = username;
-
-	debug(`User ${username} with socket id ${this.id} wants to join room '${room}'`);
+const handleUserJoined = function(username, room_id , callback) {
+	debug(`User ${username} with socket id ${this.id} wants to join room '${room_id}'`);
 
 	// join room
-	this.join(room);
+	this.join(room_id);
+
+	// add socket to list of online users in this room
+	// a) find room object with `id` === `room`
+	const room = rooms.find(chatroom => chatroom.id === room_id);
+
+	// b) add socket to room's `users` object
+	room.users[this.id] = username;
 
 	// broadcast only to those in the same room
 	this.broadcast.to(room).emit('user:connected', username);
@@ -36,6 +66,7 @@ const handleUserJoined = function(username, room, callback) {
 	// confirm join
 	callback({
 		success : true,
+		users: rooms.users
 	});
 }
 
@@ -55,14 +86,11 @@ module.exports = function(socket, _io) {
 
 	_io.emit("new-connection", "A new user connected");
 
-	// broadcast that a new user has connected
-	socket.broadcast.emit('user:connected');
-
 	// handle user disconnect
 	socket.on('disconnect', handleDisconnect);
 
 	// handle user joined
-	socket.on('user:joined', handleUserJoined)
+	socket.on('user:joined', handleUserJoined);
 
 	// handle user emitting a new message
 	socket.on('chat:message', handleChatMessage);
