@@ -64,6 +64,25 @@ socket.on('chat:message', message => {
 	addMessageToChat(message);
 });
 
+// listen for disconnect event
+socket.on('disconnect', (reason) => {
+	if(reason === 'ie server disconnect'){
+		socket.connect();
+	}
+	addNoticeToChat(`${username} disconnected`);
+})
+
+// listen for reconnect event
+socket.on('reconnect', () => {
+	console.log(username, room);
+
+	if(username) {
+		socket.emit('user:joined', username, room, (status) => {
+			addNoticeToChat("You reconnected");
+		});
+	}
+});
+
 // get username and room from form and emit `user:joined` and then show chat
 usernameForm.addEventListener('submit', e => {
 	e.preventDefault();
