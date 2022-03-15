@@ -81,6 +81,8 @@ const handleUserJoined = function(username, room_id , callback) {
 const handleChatMessage = function(message) {
 	debug('Someone said something: ', message);
 
+	// store message in `messages` collection
+
 	// emit `chat:message` event to everyone EXCEPT the sender
 	this.broadcast.to(message.room).emit('chat:message', message);
 }
