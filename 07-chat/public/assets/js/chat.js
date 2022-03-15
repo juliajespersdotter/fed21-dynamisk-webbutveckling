@@ -47,6 +47,17 @@ const addNoticeToChat = notice => {
 	liEl.scrollIntoView();
 }
 
+// update user list
+const updateUserList = users => {
+	document.querySelector('#online-users').innerHTML = 
+	Object.values(users).map(username => `<li>${username}</li>`).join("");
+}
+
+// listen for when we receive an updated list of online users (in this room)
+socket.on('user:list', users => {
+	updateUserList(users);
+})
+
 // listen for when a new user connects
 socket.on('user:connected', (username) => {
 	addNoticeToChat(`${username} connected 🤩`);
@@ -74,8 +85,7 @@ socket.on('disconnect', (reason) => {
 
 // listen for reconnect event
 socket.on('reconnect', () => {
-	console.log(username, room);
-
+	// join room? but only if you were there before
 	if(username) {
 		socket.emit('user:joined', username, room, (status) => {
 			addNoticeToChat("You reconnected");
@@ -105,10 +115,13 @@ usernameForm.addEventListener('submit', e => {
 			chatWrapperEl.classList.remove('hide');
 
 			// set room name as chat title
-			document.querySelector('#chat-title').innerText = room;
+			document.querySelector('#chat-title').innerText = status.roomName;
 		
 			// focus on inputMessage
 			messageEl.focus();
+
+			// update list of users in room
+			updateUserList(status.users);
 		}
 	});
 });

@@ -6,8 +6,8 @@ const debug = require('debug')('chat:socket_controller');
 
 let io = null; // socket.io server instance
 
-const users = {};
 // list of rooms and their users
+const users = {};
 const rooms = [
 	{
 		id: 'general',
@@ -44,6 +44,9 @@ const handleDisconnect = function() {
 
 	// remove user from list of connected users in that room
 	delete room.users[this.id];
+
+	// broadcast list of users in room to all connected sockets EXCEPT ourselves
+	this.broadcast.to(room.id).emit('user:list', room.users);
 }
 
 // handle when user has joined the chat
@@ -66,8 +69,12 @@ const handleUserJoined = function(username, room_id , callback) {
 	// confirm join
 	callback({
 		success : true,
-		users: rooms.users
+		roomName: room.name,
+		users: room.users
 	});
+
+	// broadcast list of users in room to all connected sockets EXCEPT ourselves
+	this.broadcast.to(room.id).emit('user:list', room.users);
 }
 
 // handle when user has sent a message
