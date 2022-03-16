@@ -12,6 +12,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const { instrument } = require("@socket.io/admin-ui");
 const socket_controller = require('../controllers/socket_controller');
+const models = require('../models/index');
 
 /**
  * Get port from environment and store in Express.
@@ -36,19 +37,27 @@ instrument(io, {
 	auth: false,
   });
 
-// io.on('connection', );
-
 io.on('connection', (socket) => {
 	socket_controller(socket, io);
 });
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Connect to database
  */
+models.connect()
+	.then(() => {
+		/**
+		 * Listen on provided port, on all network interfaces.
+		 */
+		server.listen(port);
+		server.on('error', onError);
+		server.on('listening', onListening);
+	})
+	.catch(e => {
+		debug('Failed to connect to database:', e);
+		process.exit(1);
+	})
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.

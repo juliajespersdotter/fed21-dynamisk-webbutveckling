@@ -3,6 +3,7 @@
  */
 
 const debug = require('debug')('chat:socket_controller');
+const models = require('../models');
 
 let io = null; // socket.io server instance
 
@@ -78,13 +79,15 @@ const handleUserJoined = function(username, room_id , callback) {
 }
 
 // handle when user has sent a message
-const handleChatMessage = function(message) {
-	debug('Someone said something: ', message);
-
-	// store message in `messages` collection
+const handleChatMessage = async function(data) {
+	debug('Someone said something: ', data);
 
 	// emit `chat:message` event to everyone EXCEPT the sender
-	this.broadcast.to(message.room).emit('chat:message', message);
+	this.broadcast.to(data.room).emit('chat:message', data);
+
+	// save message in database
+	const message = new models.Message(data);
+	await message.save();
 }
 
 
